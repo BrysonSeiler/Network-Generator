@@ -1,4 +1,4 @@
-import network_generation as net_gen
+import network_characteristics as net_char
 
 def main():
 
@@ -9,7 +9,8 @@ def main():
     task = int(input('Choose Task: '))
 
     if task == 1:
-        network_type = net_gen.choose_network()
+        network_type = net_char.choose_network()
+        net_char.get_network_characteristics(network_type)
 
 
 
