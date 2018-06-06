@@ -40,8 +40,6 @@ def position_nodes(network):
 
 
 #-----------------------------------------------------------------------------------------------------------------------------
-
-
 def plot_network(network, position):
     label_input = input('Draw Edge/Node Labels (True or False): ')
     #export_input = input('Export network as gml? (True or False): ')
