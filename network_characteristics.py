@@ -27,24 +27,51 @@ def choose_network():
 
     return network_type
 
-def get_network_characteristics(network_type):
+def get_network(network_type):
 
     if network_type == 1:
         
         print("-Erdős-Rényi Network (Binomial graph) chosen- \n")
 
-        num_nodes = int(input('Number of nodes: '))
+        #Get number of nodes and whether or not the network is directed/weighted:
+        num_nodes, directed, weighted, draw_network, is_grid, export = get_network_characteristics()
+
+        #Erdős-Rényi Network's have edge creation that is probabalistic:
         edge_prob = float(input('Probability of Edge Creation (Value between 0 and 1): '))
+
+        #Generate the network and give the nodes an initial position:
+        erdo_network, node_position = generate.erdo_network(num_nodes, edge_prob, directed, weighted)
+
+        if draw_network:
+            generate.plot_network(erdo_network, node_position)
         
-        directed_input = input('Directed Network (True or False): ')
-        directed = bool_input(directed_input)
+        if export:
+            generate.export_network(erdo_network, is_grid)
 
-        weighted_input = input('Weighted Network (True or False): ')
-        weighted = bool_input(weighted_input)
+def get_network_characteristics():
 
-        erdo_network = generate.erdo_network(num_nodes, edge_prob, directed, weighted)
+    #Ask for number of nodes:
+    num_nodes = int(input('Number of nodes: '))
 
+    #Ask if the network should be directed:
+    directed_input = input('Directed Network (True or False): ')
+    directed = bool_input(directed_input)
 
+    #Ask if the network should be weighted:
+    weighted_input = input('Weighted Network (True or False): ')
+    weighted = bool_input(weighted_input)
+
+    #Ask if the network should be drawn:
+    draw_network_input = input('Draw Network? (True or False): ')
+    draw_network = bool_input(draw_network_input)
+
+    export_input = input('Export network? (True or False): ')
+    export = bool_input(export_input)
+
+    grid_input = input('Is this a network a grid? (True or False): ')
+    is_grid = bool_input(grid_input)
+
+    return num_nodes, directed, weighted, draw_network, is_grid, export
 
 def bool_input(user_input):
 

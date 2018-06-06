@@ -10,7 +10,7 @@ def main():
 
     if task == 1:
         network_type = net_char.choose_network()
-        net_char.get_network_characteristics(network_type)
+        net_char.get_network(network_type)
 
 
 
