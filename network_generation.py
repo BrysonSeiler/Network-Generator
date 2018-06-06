@@ -21,6 +21,20 @@ def erdo_network(num_nodes, edge_prob, directed, weighted):
 
     return erdo_network, node_position
 
+def newman_network(num_nodes, edge_prob, num_neighbors, directed, weighted):
+
+    #Generate Network:
+    newman_network = nx.newman_watts_strogatz_graph(num_nodes, num_neighbors, edge_prob)
+
+    #Give the nodes an initial position:
+    node_position = position_nodes(newman_network)
+
+    #If the network is weighted, add edge weights:
+    #if weighted:
+    #    weight_edges(erdo_network)
+
+    return newman_network, node_position
+
 #-----------------------------------------------------------------------------------------------------------------------------
 def position_nodes(network):
 
@@ -65,6 +79,7 @@ def export_network(network, is_grid):
 
     network_name_input = input('Enter Network Name For Export: ')
 
+    #Export as gml:
     if file_type == 1:
 
         network_name = network_name_input + ".gml"
@@ -77,7 +92,7 @@ def export_network(network, is_grid):
         else:
             nx.write_gml(network, network_name)
         
-
+    #Export as json:
     if file_type == 2:
         network_name = network_name_input + ".json"
 

@@ -48,6 +48,28 @@ def get_network(network_type):
         if export:
             generate.export_network(erdo_network, is_grid)
 
+    if network_type == 2:
+        
+        print("-Newman–Watts–Strogatz (Small World) Network Chosen- \n")
+
+        #Get number of nodes and whether or not the network is directed/weighted:
+        num_nodes, directed, weighted, draw_network, is_grid, export = get_network_characteristics()
+
+        num_neighbors = int(input('Number of neighbors (Integer): '))
+
+        #Newman–Watts–Strogatz Network's have edge creation that is probabalistic:
+        edge_prob = float(input('Probability of Edge Creation (Value between 0 and 1): '))
+
+        #Generate the network and give the nodes an initial position:
+        newman_network, node_position = generate.newman_network(num_nodes, edge_prob, num_neighbors, directed, weighted)
+
+        if draw_network:
+            generate.plot_network(newman_network, node_position)
+        
+        if export:
+            generate.export_network(newman_network, is_grid)
+
+
 def get_network_characteristics():
 
     #Ask for number of nodes:
