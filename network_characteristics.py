@@ -20,7 +20,11 @@ def choose_network():
             5. Hexagonal
             6. n-Dimensional Grid
             7. n,m-Dimensional Grid
-            8. n-Dimensional Hypercube    
+            8. n-Dimensional Hypercube 
+
+        Communities:
+
+            9. Connected Caveman   
     ''')
 
     network_type = int(input('Choose Network Type (integer): '))
@@ -34,7 +38,9 @@ def get_network(network_type):
         print("-Erdős-Rényi Network (Binomial graph) chosen- \n")
 
         #Get number of nodes and whether or not the network is directed/weighted:
-        num_nodes, directed, weighted, draw_network, is_grid, export = get_network_characteristics()
+        num_nodes, directed, weighted = get_network_characteristics()
+
+        draw_network, is_grid, export = draw_export_info()
 
         #Erdős-Rényi Network's have edge creation that is probabalistic:
         edge_prob = float(input('Probability of Edge Creation (Value between 0 and 1): '))
@@ -53,7 +59,9 @@ def get_network(network_type):
         print("-Newman–Watts–Strogatz (Small World) Network Chosen- \n")
 
         #Get number of nodes and whether or not the network is directed/weighted:
-        num_nodes, directed, weighted, draw_network, is_grid, export = get_network_characteristics()
+        num_nodes, directed, weighted = get_network_characteristics()
+
+        draw_network, is_grid, export = draw_export_info()
 
         num_neighbors = int(input('Number of neighbors (Integer): '))
 
@@ -69,6 +77,44 @@ def get_network(network_type):
         if export:
             generate.export_network(newman_network, is_grid)
 
+    if network_type == 3:
+
+        print("-Dorogovtsev-Goltsev-Mendes Network Chosen- \n")
+
+        generation = int(input('Generation: '))
+
+        draw_network, is_grid, export = draw_export_info()
+
+        doro_network = generate.doro_network(generation, weighted)
+
+        if draw_network:
+            generate.plot_network(doro_network, node_position)
+        
+        if export:
+            generate.export_network(doro_network, is_grid)
+
+
+    if network_type == 9:
+        
+        print("-Caveman Network Chosen- \n")
+
+        num_cliques = int(input('Number of Cliques (Integer): '))
+
+        #Get number of nodes and whether or not the network is directed/weighted:
+        draw_network, is_grid, export = draw_export_info()
+
+        #Newman–Watts–Strogatz Network's have edge creation that is probabalistic:
+        size = int(input('Size (Integer): '))
+
+        #Generate the network and give the nodes an initial position:
+        caveman_network, node_position = generate.caveman_network(num_cliques, size)
+
+        if draw_network:
+            generate.plot_network(caveman_network, node_position)
+        
+        if export:
+            generate.export_network(caveman_network, is_grid)
+
 
 def get_network_characteristics():
 
@@ -83,6 +129,10 @@ def get_network_characteristics():
     weighted_input = input('Weighted Network (True or False): ')
     weighted = bool_input(weighted_input)
 
+    return num_nodes, directed, weighted
+
+def draw_export_info():
+
     #Ask if the network should be drawn:
     draw_network_input = input('Draw Network? (True or False): ')
     draw_network = bool_input(draw_network_input)
@@ -93,7 +143,7 @@ def get_network_characteristics():
     grid_input = input('Is this a network a grid? (True or False): ')
     is_grid = bool_input(grid_input)
 
-    return num_nodes, directed, weighted, draw_network, is_grid, export
+    return draw_network, is_grid, export
 
 def bool_input(user_input):
 
@@ -102,5 +152,4 @@ def bool_input(user_input):
             return {'true':True, 'false':False}[user_input.lower()]
         except KeyError:
             print("Please enter true or false")
-        
         

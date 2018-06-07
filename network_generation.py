@@ -35,6 +35,43 @@ def newman_network(num_nodes, edge_prob, num_neighbors, directed, weighted):
 
     return newman_network, node_position
 
+def doro_network(generation, weighted):
+
+    #Generate Network:
+    doro_network = nx.dorogovtsev_goltsev_mendes_graph(generation)
+
+    #Give the nodes an initial position:
+    node_position = position_nodes(doro_network)
+
+    #If the network is weighted, add edge weights:
+    #if weighted:
+    #    weight_edges(erdo_network)
+
+    return doro_network, node_position
+
+
+
+
+
+
+
+def caveman_network(num_cliques, size):
+
+    #Generate Network:
+    caveman_network = nx.connected_caveman_graph(num_cliques, size)
+
+    #Give the nodes an initial position:
+    node_position = position_nodes(caveman_network)
+
+    #If the network is weighted, add edge weights:
+    #if weighted:
+    #    weight_edges(erdo_network)
+
+    return caveman_network, node_position
+
+
+
+
 #-----------------------------------------------------------------------------------------------------------------------------
 def position_nodes(network):
 
