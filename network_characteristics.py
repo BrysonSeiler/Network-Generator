@@ -37,10 +37,12 @@ def get_network(network_type):
         
         print("-Erdős-Rényi Network (Binomial graph) chosen- \n")
 
-        #Get number of nodes and whether or not the network is directed/weighted:
-        num_nodes, directed, weighted = get_network_characteristics()
+        is_grid = False
 
-        draw_network, is_grid, export = draw_export_info()
+        #Get number of nodes and whether or not the network is directed/weighted:
+        num_nodes, directed, weighted = get_network_characteristics(is_grid)
+
+        draw_network, export = draw_export_info()
 
         #Erdős-Rényi Network's have edge creation that is probabalistic:
         edge_prob = float(input('Probability of Edge Creation (Value between 0 and 1): '))
@@ -58,10 +60,12 @@ def get_network(network_type):
         
         print("-Newman–Watts–Strogatz (Small World) Network Chosen- \n")
 
-        #Get number of nodes and whether or not the network is directed/weighted:
-        num_nodes, directed, weighted = get_network_characteristics()
+        is_grid = False
 
-        draw_network, is_grid, export = draw_export_info()
+        #Get number of nodes and whether or not the network is directed/weighted:
+        num_nodes, directed, weighted = get_network_characteristics(is_grid)
+
+        draw_network, export = draw_export_info()
 
         num_neighbors = int(input('Number of neighbors (Integer): '))
 
@@ -83,7 +87,7 @@ def get_network(network_type):
 
         generation = int(input('Generation: '))
 
-        draw_network, is_grid, export = draw_export_info()
+        draw_network, export = draw_export_info()
 
         doro_network = generate.doro_network(generation, weighted)
 
@@ -93,6 +97,26 @@ def get_network(network_type):
         if export:
             generate.export_network(doro_network, is_grid)
 
+    if network_type == 4:
+
+        print("-Triangular Lattice Chosen- \n")
+
+        is_grid = True
+
+        #Get number of nodes and whether or not the network is directed/weighted:
+        m, n, periodic, directed, weighted = get_network_characteristics(is_grid)
+
+        draw_network, export = draw_export_info()
+
+        #Generate the network and give the nodes an initial position:
+        triangular_lattice, node_position = generate.triangular_lattice(m, n, periodic, directed, weighted)
+
+        if draw_network:
+            generate.plot_network(triangular_lattice, node_position)
+        
+        if export:
+            generate.export_network(triangular_lattice, is_grid)
+
 
     if network_type == 9:
         
@@ -101,7 +125,7 @@ def get_network(network_type):
         num_cliques = int(input('Number of Cliques (Integer): '))
 
         #Get number of nodes and whether or not the network is directed/weighted:
-        draw_network, is_grid, export = draw_export_info()
+        draw_network, export = draw_export_info()
 
         #Newman–Watts–Strogatz Network's have edge creation that is probabalistic:
         size = int(input('Size (Integer): '))
@@ -116,20 +140,41 @@ def get_network(network_type):
             generate.export_network(caveman_network, is_grid)
 
 
-def get_network_characteristics():
+def get_network_characteristics(is_grid):
 
-    #Ask for number of nodes:
-    num_nodes = int(input('Number of nodes: '))
+    if is_grid:
 
-    #Ask if the network should be directed:
-    directed_input = input('Directed Network (True or False): ')
-    directed = bool_input(directed_input)
+        dimension = input('Enter network dimension separated by commas: ')
+        m,n = map(int, dimension.split(','))
 
-    #Ask if the network should be weighted:
-    weighted_input = input('Weighted Network (True or False): ')
-    weighted = bool_input(weighted_input)
+        periodic_input = input('Periodic Network (True or False): ')
+        periodic = bool_input(periodic_input)
 
-    return num_nodes, directed, weighted
+        #Ask if the network should be directed:
+        directed_input = input('Directed Network (True or False): ')
+        directed = bool_input(directed_input)
+
+        #Ask if the network should be weighted:
+        weighted_input = input('Weighted Network (True or False): ')
+        weighted = bool_input(weighted_input)
+
+        return m, n, periodic, directed, weighted
+
+
+    else:
+
+        #Ask for number of nodes:
+        num_nodes = int(input('Number of nodes: '))
+
+        #Ask if the network should be directed:
+        directed_input = input('Directed Network (True or False): ')
+        directed = bool_input(directed_input)
+
+        #Ask if the network should be weighted:
+        weighted_input = input('Weighted Network (True or False): ')
+        weighted = bool_input(weighted_input)
+
+        return num_nodes, directed, weighted
 
 def draw_export_info():
 
@@ -140,10 +185,7 @@ def draw_export_info():
     export_input = input('Export network? (True or False): ')
     export = bool_input(export_input)
 
-    grid_input = input('Is this a network a grid? (True or False): ')
-    is_grid = bool_input(grid_input)
-
-    return draw_network, is_grid, export
+    return draw_network, export
 
 def bool_input(user_input):
 
