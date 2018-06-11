@@ -50,7 +50,6 @@ def doro_network(generation, weighted):
     return doro_network, node_position
 
 #----------------------------------------------------------------------------------
-
 def triangular_lattice(m, n, periodic, directed, weighted):
 
     #Generate Network:
@@ -65,7 +64,15 @@ def triangular_lattice(m, n, periodic, directed, weighted):
 
     return triangular_lattice, node_position
 
+def grid_network(m,n, directed, weighted):
 
+    #Generate Network:
+    grid_network = nx.grid_2d_graph(m,n)
+
+    #Give the nodes an initial position:
+    node_position = dict(zip(grid_network,grid_network))
+
+    return grid_network, node_position
 
 
 
@@ -153,7 +160,7 @@ def export_network(network, is_grid):
             relabled_grid = nx.convert_node_labels_to_integers(network, first_label=0, ordering="default")
 
             #Create a dictionary in a node-link format:
-            node_data = json_graph.node_link_data(network, {'link': 'edges', 'source': 'from', 'target': 'to'})
+            node_data = json_graph.node_link_data(network)
 
             with open(network_name, 'w') as net_file:
                 json.dump(node_data, net_file)

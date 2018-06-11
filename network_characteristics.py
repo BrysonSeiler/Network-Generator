@@ -17,10 +17,9 @@ def choose_network():
         Lattices:
 
             4. Triangular
-            5. Hexagonal
-            6. n-Dimensional Grid
-            7. n,m-Dimensional Grid
-            8. n-Dimensional Hypercube 
+            5. n,m-Dimensional Grid
+            6. Hexagonal
+            7. n-Dimensional Hypercube 
 
         Communities:
 
@@ -116,6 +115,26 @@ def get_network(network_type):
         
         if export:
             generate.export_network(triangular_lattice, is_grid)
+
+    if network_type == 5:
+
+        print("-n,m-Dimensional Grid Chosen-")
+
+        is_grid = True
+
+        #Get number of nodes and whether or not the network is directed/weighted:
+        m, n, periodic, directed, weighted = get_network_characteristics(is_grid)
+
+        draw_network, export = draw_export_info()
+
+        #Generate the network and give the nodes an initial position:
+        grid, node_position = generate.grid_network(m, n, directed, weighted)
+
+        if draw_network:
+            generate.plot_network(grid, node_position)
+        
+        if export:
+            generate.export_network(grid, is_grid)
 
 
     if network_type == 9:
