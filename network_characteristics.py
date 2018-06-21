@@ -118,6 +118,27 @@ def get_network(network_type):
 
     if network_type == 5:
 
+        print("-Hexagonal Lattice Chosen- \n")
+
+        is_grid = True
+
+        #Get number of nodes and whether or not the network is directed/weighted:
+        m, n, periodic, directed, weighted = get_network_characteristics(is_grid)
+
+        draw_network, export = draw_export_info()
+
+        #Generate the network and give the nodes an initial position:
+        hexagonal_lattice, node_position = generate.hexagonal_lattice(m, n, periodic, directed, weighted)
+
+        if draw_network:
+            generate.plot_network(hexagonal_lattice, node_position)
+        
+        if export:
+            generate.export_network(hexagonal_lattice, is_grid)
+
+
+    if network_type == 6:
+
         print("-n,m-Dimensional Grid Chosen-")
 
         is_grid = True
